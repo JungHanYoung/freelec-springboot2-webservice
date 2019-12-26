@@ -23,16 +23,6 @@ before_deploy:
   - mv freerec-sprintboot2-webservice.zip deploy/freerec-sprintboot2-webservice.zip
 
 deploy:
-  - provider: codedeploy
-    access_key_id: $AWS_CLIENT_ID
-    secret_access_key: $AWS_CLIENT_SECRET
-    bucket: freerec-spring-webservice
-    region: ap-northeast-2
-    skip_cleanup: true
-    acl: private
-    local_dir: deploy
-    wait-until-deployed: true
-
   - provider: s3
     access_key_id: $AWS_CLIENT_ID
     secret_access_key: $AWS_CLIENT_SECRET
@@ -42,6 +32,19 @@ deploy:
     acl: private
     local_dir: deploy
     wait-until-deployed: true
+
+  - provider: codedeploy
+      access_key_id: $AWS_CLIENT_ID
+      secret_access_key: $AWS_CLIENT_SECRET
+      bucket: freerec-spring-webservice
+      key: freelec-spring-webservice.zip
+      bundle_type: zip
+      deployment_group: freerec-springboot-webservice
+      region: ap-northeast-2
+      skip_cleanup: true
+      acl: private
+      local_dir: deploy
+      wait-until-deployed: true
 
 # CI 실행 완료시 메일로 알람
 notifications:
