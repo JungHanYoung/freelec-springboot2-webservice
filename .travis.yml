@@ -37,7 +37,7 @@ deploy:
       access_key_id: $AWS_CLIENT_ID
       secret_access_key: $AWS_CLIENT_SECRET
       bucket: freerec-spring-webservice
-      key: freelec-spring-webservice.zip
+      key: freerec-sprintboot2-webservice.zip
       bundle_type: zip
       deployment_group: freerec-springboot-webservice
       region: ap-northeast-2
