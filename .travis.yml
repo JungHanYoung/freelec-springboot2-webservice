@@ -39,7 +39,8 @@ deploy:
     bucket: freerec-spring-webservice
     key: freerec-sprintboot2-webservice.zip
     bundle_type: zip
-    deployment_group: freerec-springboot-webservice
+    application: freelec-springboot-webservice
+    deployment_group: freelec-springboot-webserivce-group
     region: ap-northeast-2
     skip_cleanup: true
     acl: private
