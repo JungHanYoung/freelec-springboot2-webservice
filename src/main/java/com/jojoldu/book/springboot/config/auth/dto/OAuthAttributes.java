@@ -28,8 +28,32 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
+        } else if("github".equals(registrationId)) {
+            return ofGithub(userNameAttributeName, attributes);
+        } else if("kakao".equals(registrationId)) {
+            return ofKakao("id", attributes);
+        } else if("facebook".equals(registrationId)) {
+            return ofFacebook(userNameAttributeName, attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
+    }
+
+    private static OAuthAttributes ofFacebook(String userNameAttributeName, Map<String, Object> attributes) {
+
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .build();
+    }
+
+    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("avatar_url"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
@@ -50,6 +74,24 @@ public class OAuthAttributes {
                 .email((String) response.get("email"))
                 .picture((String) response.get("profileImage"))
                 .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
+        String email = (String) kakaoAccount.get("email");
+        String name = (String) profile.get("nickname");
+        String picture = (String) profile.get("profile_image_url");
+
+        return OAuthAttributes.builder()
+                .name(name)
+                .email(email)
+                .picture(picture)
+                .attributes(kakaoAccount)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
     }
